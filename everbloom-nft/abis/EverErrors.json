@@ -1,0 +1,51 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "EverErrors",
+  "sourceName": "contracts/EverErrors.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "DropAlreadyExists",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DropSoldOut",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "IncorrectAmountSent",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidInterface",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotEnoughTokensAvailable",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SaleEnded",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SaleNotStarted",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "UnauthorizedUpdate",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122079c50f8d5e80e9835769a5ac825dfc65c5b5bd56cf76c45c155876078c731bc264736f6c63430008110033",
+  "deployedBytecode": "0x6080604052600080fdfea264697066735822122079c50f8d5e80e9835769a5ac825dfc65c5b5bd56cf76c45c155876078c731bc264736f6c63430008110033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

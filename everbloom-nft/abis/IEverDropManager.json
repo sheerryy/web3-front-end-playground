@@ -1,0 +1,422 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IEverDropManager",
+  "sourceName": "contracts/IEverDropManager.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_creator",
+          "type": "address"
+        }
+      ],
+      "name": "addCreator",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_creator",
+          "type": "address"
+        }
+      ],
+      "name": "addSubAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_nft",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_price",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint128",
+          "name": "_supply",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint128",
+          "name": "_royaltySharePerToken",
+          "type": "uint128"
+        },
+        {
+          "internalType": "string",
+          "name": "_externalId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint64",
+          "name": "_saleOpenTime",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "_saleCloseTime",
+          "type": "uint64"
+        }
+      ],
+      "name": "create",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_dropId",
+          "type": "uint256"
+        }
+      ],
+      "name": "drops",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "dropId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint128",
+              "name": "sold",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint64",
+              "name": "saleOpenTime",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "saleCloseTime",
+              "type": "uint64"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "price",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "supply",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "royaltySharePerToken",
+                  "type": "uint128"
+                }
+              ],
+              "internalType": "struct IEverDropManager.TokenInfo",
+              "name": "tokenInfo",
+              "type": "tuple"
+            },
+            {
+              "internalType": "string",
+              "name": "externalId",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "nft",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct IEverDropManager.Drop",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_dropId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getDrop",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "dropId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint128",
+              "name": "sold",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint64",
+              "name": "saleOpenTime",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "saleCloseTime",
+              "type": "uint64"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "price",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "supply",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "royaltySharePerToken",
+                  "type": "uint128"
+                }
+              ],
+              "internalType": "struct IEverDropManager.TokenInfo",
+              "name": "tokenInfo",
+              "type": "tuple"
+            },
+            {
+              "internalType": "string",
+              "name": "externalId",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "nft",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct IEverDropManager.Drop",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_externalId",
+          "type": "string"
+        }
+      ],
+      "name": "getDropByExternalId",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "dropId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint128",
+              "name": "sold",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint64",
+              "name": "saleOpenTime",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "saleCloseTime",
+              "type": "uint64"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "price",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "supply",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "royaltySharePerToken",
+                  "type": "uint128"
+                }
+              ],
+              "internalType": "struct IEverDropManager.TokenInfo",
+              "name": "tokenInfo",
+              "type": "tuple"
+            },
+            {
+              "internalType": "string",
+              "name": "externalId",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "nft",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct IEverDropManager.Drop",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_creator",
+          "type": "address"
+        }
+      ],
+      "name": "removeCreator",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_creator",
+          "type": "address"
+        }
+      ],
+      "name": "removeSubAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_dropId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "setRightHolderInfo",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_dropId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint64",
+          "name": "_saleOpenTime",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "_saleCloseTime",
+          "type": "uint64"
+        }
+      ],
+      "name": "setSalesInfo",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_dropId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint128",
+          "name": "_supply",
+          "type": "uint128"
+        }
+      ],
+      "name": "setSupply",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_dropId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint128",
+          "name": "_quantity",
+          "type": "uint128"
+        }
+      ],
+      "name": "updateDropCounter",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
