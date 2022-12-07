@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>CryptoZombies front-end</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+    </head>
+    <body>
+        <!--  Create Drop Section  -->
+        <div id="everDropManager" style="padding: 10px; border: 1px solid grey; border-radius: 10px">
+            <h4>Create Drop</h4>
+            <div> External ID:</div>
+            <input value="poc-external-id-" type="text" id="everDropManager-external-id" style="margin: 10px 0px"/> <br>
+            <button id="everDropManager-btn"> Create Drop</button>
+        </div>
+        <div id="everDropTransactionStatus"
+             style="background-color: ghostwhite;padding: 10px; border: 1px solid grey; border-radius: 10px; margin: 10px 0px">
+            Drop Transaction data
+        </div>
+        <hr/>
+        <hr/>
+        <!--  Purchase NFT Section  -->
+        <div id="everNFT" style="padding: 10px; border: 1px solid grey; border-radius: 10px">
+            <h4>Purchase NFT</h4>
+            <div> External ID:</div>
+            <input value="poc-external-id-" type="text" id="everNFT-external-id" style="margin: 10px 0px"/><br>
+            <div> Quantity:</div>
+            <input value="1" type="number" id="everNFT-quantity" style="margin: 10px 0px"/><br>
+            <button id="everNFT-btn"> Purchase NFT</button>
+        </div>
+        <div id="everNftTransactionStatus"
+             style="background-color: ghostwhite;padding: 10px; border: 1px solid grey; border-radius: 10px; margin: 10px 0px">
+            NFt Transaction data
+        </div>
+        <hr/>
+        <hr/>
+        <!--  Hash Message Section  -->
+        <div id="hashMessage" style="padding: 10px; border: 1px solid grey; border-radius: 10px">
+            <h4>Hash Message</h4>
+            <div> Message:</div>
+            <input value="Tuco Salamanca" type="text" id="hashMessage-message" style="margin: 10px 0px"/><br>
+            <button id="hashMessage-btn"> Hash Message</button>
+        </div>
+        <div id="hashMessageData"
+             style="background-color: ghostwhite;padding: 10px; border: 1px solid grey; border-radius: 10px; margin: 10px 0px">
+            Hash of Message: <div id="hashMessageData-hash"></div>
+            <hr>
+            Signature: <div id="hashMessageData-signature"></div>
+            <hr>
+            Recovered Address: <div id="hashMessageData-address"></div>
+            <hr>
+            Status: <div id="hashMessageData-status">Not Verified</div>
+        </div>
+        <script>
+            const everNftAddress = "0x6faD8e04Ff7d0c2D97fB0624E4B8756Fd47eaB4f";
+            const everDropManagerAddress = "0x96E935FB549765b8ea63A6c3372FD6F6405e74af";
+            let everDropManager;
+            let everNFT;
+            let userAccount;
+
+            async function startApp() {
+                let EverNftAbi = await fetch('./abis/EverNFT.json');
+                let EverDropManagerAbi = await fetch('./abis/EverDropManager.json');
+                EverNftAbi = (await EverNftAbi.json()).abi;
+                EverDropManagerAbi = (await EverDropManagerAbi.json()).abi;
+
+                everNFT = new web3js.eth.Contract(EverNftAbi, everNftAddress);
+                everDropManager = new web3js.eth.Contract(EverDropManagerAbi, everDropManagerAddress);
+                const accounts = await ethereum.request({method: 'eth_requestAccounts'});
+                userAccount = accounts[0];
+            }
+
+            window.addEventListener('load', async function () {
+
+                // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+                if (typeof web3 !== 'undefined') {
+                    // Use Mist/MetaMask's provider
+                    web3js = new Web3(web3.currentProvider);
+                } else {
+                    // Handle the case where the user doesn't have Metamask installed
+                    // Probably show them a message prompting them to install Metamask
+                }
+                startApp()
+
+            });
+
+            $('#everDropManager-btn').click(() => {
+                const externalId = $('#everDropManager-external-id').val();
+                if (externalId === '') {
+                    alert('Invalid External id');
+                    return
+                }
+
+                $("#everDropTransactionStatus").text("Creating new Drop on the blockchain. This may take a while...");
+                // Send the tx to our contract:
+                everDropManager.methods.create(
+                    userAccount,
+                    everNftAddress,
+                    1000,
+                    10,
+                    1,
+                    externalId,
+                    Math.floor(Date.now() / 1000),
+                    Math.floor(new Date('2025-1-1').getTime() / 1000)
+                )
+                    .send({from: userAccount})
+                    .on('transactionHash', function (hash) {
+                        $("#everDropTransactionStatus").html(
+                            `<b>Transaction Hash </b>: <a href='https://mumbai.polygonscan.com/tx/${hash}' >${hash}</a>`
+                        )
+                    })
+                    .on("receipt", function (receipt) {
+                        $("#everDropTransactionStatus").text("Successfully created " + JSON.stringify(receipt) + "!");
+                    })
+                    .on("error", function (error) {
+                        $("#everDropTransactionStatus").text(JSON.stringify(error));
+                    });
+            });
+
+            $('#everNFT-btn').click(async () => {
+                const externalId = $('#everNFT-external-id').val();
+                const quantity = $('#everNFT-quantity').val();
+                if (externalId === '' || !quantity) {
+                    alert('Invalid External id or quantity');
+                    return
+                }
+
+                const drop = await everDropManager.methods.getDropByExternalId(externalId).call({from: userAccount});
+                const dropId = Number(drop.dropId, 10);
+                const price = Number(drop.tokenInfo.price, 10);
+                console.log(drop);
+
+                $("#everNftTransactionStatus").text("Creating new Drop on the blockchain. This may take a while...");
+                // Send the tx to our contract:
+                everNFT.methods.mint(
+                    userAccount,
+                    dropId,
+                    quantity
+                )
+                    .send({from: userAccount, value: price * quantity})
+                    .on('transactionHash', function (hash) {
+                        $("#everNftTransactionStatus").html(
+                            `<b>Transaction Hash </b>: <a href='https://mumbai.polygonscan.com/tx/${hash}' >${hash}</a>`
+                        )
+                    })
+                    .on("receipt", function (receipt) {
+                        $("#everNftTransactionStatus").text("Successfully created " + JSON.stringify(receipt) + "!");
+                    })
+                    .on("error", function (error) {
+                        $("#everNftTransactionStatus").text(JSON.stringify(error));
+                    });
+            });
+
+            $('#hashMessage-btn').click(async () => {
+                const message = $('#hashMessage-message').val();
+
+                if (!message) {
+                    alert('Invalid Message')
+                }
+
+                const hash = web3js.utils.sha3(message);
+                // const hash = message;
+                $("#hashMessageData-hash").html(`<code>${hash}</code>`);
+                const signature = await web3js.eth.personal.sign(hash, userAccount);
+                $("#hashMessageData-signature").html(`<code>${JSON.stringify(signature, ' ')}</code>`);
+
+                const signingAddress = await web3js.eth.personal.ecRecover(hash, signature)
+                $("#hashMessageData-address").html(`<code>${JSON.stringify(signingAddress, ' ')}</code>`);
+
+                if (signingAddress === userAccount) {
+                    $("#hashMessageData-status").text(`Verified`);
+                }
+            });
+        </script>
+    </body>
+</html>
