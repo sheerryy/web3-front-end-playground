@@ -4,19 +4,6 @@
   "sourceName": "contracts/IEverNFT.sol",
   "abi": [
     {
-      "inputs": [],
-      "name": "baseURI",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
@@ -32,6 +19,21 @@
           "internalType": "uint128",
           "name": "_quantity",
           "type": "uint128"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string[]",
+          "name": "_externalIds",
+          "type": "string[]"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "_proof",
+          "type": "bytes32[]"
         }
       ],
       "name": "mint",

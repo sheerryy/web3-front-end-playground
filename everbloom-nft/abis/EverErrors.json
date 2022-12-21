@@ -4,8 +4,14 @@
   "sourceName": "contracts/EverErrors.sol",
   "abi": [
     {
-      "inputs": [],
-      "name": "DropAlreadyExists",
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "externalId",
+          "type": "string"
+        }
+      ],
+      "name": "DropConflict",
       "type": "error"
     },
     {
@@ -20,12 +26,48 @@
     },
     {
       "inputs": [],
+      "name": "IncorrectExternalIds",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientBalance",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "InvalidInterface",
       "type": "error"
     },
     {
       "inputs": [],
+      "name": "InvalidSupply",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "NotEnoughTokensAvailable",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotWhiteListed",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "externalId",
+          "type": "string"
+        }
+      ],
+      "name": "PrintConflict",
       "type": "error"
     },
     {
@@ -42,10 +84,15 @@
       "inputs": [],
       "name": "UnauthorizedUpdate",
       "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroAddress",
+      "type": "error"
     }
   ],
-  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122079c50f8d5e80e9835769a5ac825dfc65c5b5bd56cf76c45c155876078c731bc264736f6c63430008110033",
-  "deployedBytecode": "0x6080604052600080fdfea264697066735822122079c50f8d5e80e9835769a5ac825dfc65c5b5bd56cf76c45c155876078c731bc264736f6c63430008110033",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220f287ffd3ca57fc0e1e3a3b12c07727ee2bd0f718f94ea4cc2704b7c0198910d164736f6c63430008110033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220f287ffd3ca57fc0e1e3a3b12c07727ee2bd0f718f94ea4cc2704b7c0198910d164736f6c63430008110033",
   "linkReferences": {},
   "deployedLinkReferences": {}
 }

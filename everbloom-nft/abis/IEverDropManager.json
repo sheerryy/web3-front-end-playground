@@ -20,7 +20,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_creator",
+          "name": "_subAdmin",
           "type": "address"
         }
       ],
@@ -70,6 +70,11 @@
           "internalType": "uint64",
           "name": "_saleCloseTime",
           "type": "uint64"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_merkle",
+          "type": "bytes32"
         }
       ],
       "name": "create",
@@ -145,6 +150,11 @@
               "internalType": "address",
               "name": "nft",
               "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "merkleRoot",
+              "type": "bytes32"
             }
           ],
           "internalType": "struct IEverDropManager.Drop",
@@ -223,6 +233,11 @@
               "internalType": "address",
               "name": "nft",
               "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "merkleRoot",
+              "type": "bytes32"
             }
           ],
           "internalType": "struct IEverDropManager.Drop",
@@ -301,6 +316,11 @@
               "internalType": "address",
               "name": "nft",
               "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "merkleRoot",
+              "type": "bytes32"
             }
           ],
           "internalType": "struct IEverDropManager.Drop",
@@ -328,11 +348,29 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_creator",
+          "name": "_subAdmin",
           "type": "address"
         }
       ],
       "name": "removeSubAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_dropId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_merkle",
+          "type": "bytes32"
+        }
+      ],
+      "name": "setMerkleRoot",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

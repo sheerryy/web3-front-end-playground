@@ -31,7 +31,7 @@
         </div>
         <div id="everNftTransactionStatus"
              style="background-color: ghostwhite;padding: 10px; border: 1px solid grey; border-radius: 10px; margin: 10px 0px">
-            NFt Transaction data
+            NFT Transaction data
         </div>
         <hr/>
         <hr/>
@@ -53,20 +53,25 @@
             Status: <div id="hashMessageData-status">Not Verified</div>
         </div>
         <script>
-            const everNftAddress = "0x6faD8e04Ff7d0c2D97fB0624E4B8756Fd47eaB4f";
-            const everDropManagerAddress = "0x96E935FB549765b8ea63A6c3372FD6F6405e74af";
+            const everNftAddress = "0x9cbf8826C78eAE0ae9BCf8C1765ad8330ff78ceF";
+            const everDropManagerAddress = "0xd8FCB53965E3646EA11B0972eBb5f17eC4f36021";
+            const usdcAddress = "0x0fa8781a83e46826621b3bc094ea2a0212e71b23";
             let everDropManager;
             let everNFT;
+            let usdc;
             let userAccount;
 
             async function startApp() {
                 let EverNftAbi = await fetch('./abis/EverNFT.json');
                 let EverDropManagerAbi = await fetch('./abis/EverDropManager.json');
+                let USDCAbi = await fetch('./abis/USDC.json');
                 EverNftAbi = (await EverNftAbi.json()).abi;
                 EverDropManagerAbi = (await EverDropManagerAbi.json()).abi;
+                USDCAbi = (await USDCAbi.json()).abi;
 
                 everNFT = new web3js.eth.Contract(EverNftAbi, everNftAddress);
                 everDropManager = new web3js.eth.Contract(EverDropManagerAbi, everDropManagerAddress);
+                usdc = new web3js.eth.Contract(USDCAbi, usdcAddress);
                 const accounts = await ethereum.request({method: 'eth_requestAccounts'});
                 userAccount = accounts[0];
             }
@@ -97,17 +102,18 @@
                 everDropManager.methods.create(
                     userAccount,
                     everNftAddress,
-                    1000,
+                    1_000_000,
                     10,
                     1,
                     externalId,
                     Math.floor(Date.now() / 1000),
-                    Math.floor(new Date('2025-1-1').getTime() / 1000)
+                    Math.floor(new Date('2025-1-1').getTime() / 1000),
+                    "0x0000000000000000000000000000000000000000000000000000000000000000"
                 )
                     .send({from: userAccount})
                     .on('transactionHash', function (hash) {
                         $("#everDropTransactionStatus").html(
-                            `<b>Transaction Hash </b>: <a href='https://mumbai.polygonscan.com/tx/${hash}' >${hash}</a>`
+                            `<b>Transaction Hash </b>: <a target="_blank" href='https://mumbai.polygonscan.com/tx/${hash}' >${hash}</a>`
                         )
                     })
                     .on("receipt", function (receipt) {
@@ -129,23 +135,39 @@
                 const drop = await everDropManager.methods.getDropByExternalId(externalId).call({from: userAccount});
                 const dropId = Number(drop.dropId, 10);
                 const price = Number(drop.tokenInfo.price, 10);
-                console.log(drop);
+                console.log('dropId', dropId, 'price', price);
 
-                $("#everNftTransactionStatus").text("Creating new Drop on the blockchain. This may take a while...");
+                $("#everNftTransactionStatus").text("Waiting for USDC approval");
                 // Send the tx to our contract:
-                everNFT.methods.mint(
-                    userAccount,
-                    dropId,
-                    quantity
-                )
-                    .send({from: userAccount, value: price * quantity})
+                usdc.methods.approve(everNftAddress, price * quantity)
+                    .send({ from: userAccount })
                     .on('transactionHash', function (hash) {
                         $("#everNftTransactionStatus").html(
-                            `<b>Transaction Hash </b>: <a href='https://mumbai.polygonscan.com/tx/${hash}' >${hash}</a>`
+                            `<b>Approval Transaction Hash </b>: <a target="_blank" href='https://mumbai.polygonscan.com/tx/${hash}' >${hash}</a>`
                         )
                     })
                     .on("receipt", function (receipt) {
-                        $("#everNftTransactionStatus").text("Successfully created " + JSON.stringify(receipt) + "!");
+                        $("#everNftTransactionStatus").text("Successfully approved!. Minting new NFT(s) on the blockchain. This may take a while...");
+                        everNFT.methods.mint(
+                            userAccount,
+                            dropId,
+                            quantity,
+                            price * quantity,
+                            ['external-Id-' + Math.floor(Date.now() / 1000)],
+                            ["0x0000000000000000000000000000000000000000000000000000000000000000"]
+                        )
+                            .send({ from: userAccount })
+                            .on('transactionHash', function (hash) {
+                                $("#everNftTransactionStatus").html(
+                                    `<b>Transaction Hash </b>: <a target="_blank" href='https://mumbai.polygonscan.com/tx/${hash}' >${hash}</a>`
+                                )
+                            })
+                            .on("receipt", function (receipt) {
+                                $("#everNftTransactionStatus").text("Successfully created " + JSON.stringify(receipt) + "!");
+                            })
+                            .on("error", function (error) {
+                                $("#everNftTransactionStatus").text(JSON.stringify(error));
+                            });
                     })
                     .on("error", function (error) {
                         $("#everNftTransactionStatus").text(JSON.stringify(error));
